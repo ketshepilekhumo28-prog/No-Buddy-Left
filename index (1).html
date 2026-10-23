@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BAC Inclusive Campus Companion</title>
+<meta name="description" content="Accessibility-aware campus routes, voluntary peer support and inclusive events for Botswana Accountancy College. Demo prototype.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="demo-bar" role="note"><strong>Demo mode.</strong> Sample data only. No real accounts, emails, reports or matching.</div>
+<header class="top">
+ <a class="brand" href="#home"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#0f766e"/><path d="M7 15l5 5 9-11" stroke="#fff" stroke-width="3" fill="none"/></svg> BAC Inclusive Campus Companion</a>
+ <button class="btn ghost menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+ <nav id="nav" aria-label="Main">
+  <a href="#routes">Routes</a><a href="#buddy">Campus Buddy</a><a href="#events">Events</a><a href="#respect">Etiquette</a><a href="#help">Help</a><a href="#account">Sign in</a>
+  <button class="btn ghost" id="prefsBtn">Accessibility settings</button>
+ </nav>
+</header>
+<main id="main">
+<section id="home" class="hero">
+ <h1>Every student belongs. Every route matters.</h1>
+ <p class="lead">Plan routes around BAC campuses, ask a fellow student for help if you want it, or offer help when you can. Everything is your choice.</p>
+ <div class="actions">
+  <a class="btn primary" href="#routes">Explore campus routes</a>
+  <a class="btn" href="#buddy">Request assistance</a>
+  <a class="btn" href="#volunteer">Volunteer to help</a>
+  <a class="btn" href="#events">Discover inclusive events</a>
+ </div>
+ <div class="campus-quick" role="group" aria-label="Quick access to campuses">
+  <button class="btn chip" data-campus="main">Main Campus</button>
+  <button class="btn chip" data-campus="new">New Campus</button>
+  <span id="campusNow" class="note"></span>
+ </div>
+</section>
+
+<section aria-labelledby="h-steps">
+ <h2 id="h-steps">How it works</h2>
+ <ol class="steps">
+  <li><h3>Choose what you need</h3><p>Pick a campus, a destination and any access needs. No diagnosis is ever asked for.</p></li>
+  <li><h3>Find available options</h3><p>See route details with confidence labels, or see volunteers who chose to be listed.</p></li>
+  <li><h3>Confirm your choice</h3><p>You decide. Either person can decline or cancel at any time, with no penalty.</p></li>
+ </ol>
+</section>
+
+<section aria-labelledby="h-status">
+ <h2 id="h-status">System status</h2>
+ <p class="note">Honest labels for what is real and what is not.</p>
+ <ul class="status" id="statusList">
+  <li><span class="tag demo">Demo</span> Campus map: fictional placeholder layout</li>
+  <li><span class="tag demo">Demo</span> Volunteer matching: simulated in this browser only</li>
+  <li><span class="tag off">Not connected</span> Student verification and sign-in</li>
+  <li><span class="tag off">Not connected</span> Notifications and reports to BAC staff</li>
+  <li><span class="tag ok">Works now</span> Accessibility settings, route filters, event list</li>
+ </ul>
+</section>
+
+<section id="routes" aria-labelledby="h-routes">
+ <h2 id="h-routes">Campus routes</h2>
+ <p class="banner">Fictional demo map. Not the real BAC layout. No route here is verified. Replace <code>CAMPUSES</code> in <code>script.js</code> with checked BAC data.</p>
+ <div class="tabs" role="group" aria-label="Choose campus">
+  <button class="btn chip" data-campus="main" aria-pressed="true">Main Campus</button>
+  <button class="btn chip" data-campus="new" aria-pressed="false">New Campus</button>
+ </div>
+ <form id="routeForm" class="grid" novalidate>
+  <label>From<select id="from"></select></label>
+  <label>To<select id="to"></select></label>
+  <fieldset><legend>Access needs</legend>
+   <label class="chk"><input type="checkbox" name="need" value="stepfree"> Step-free</label>
+   <label class="chk"><input type="checkbox" name="need" value="wheelchair"> Wheelchair-accessible</label>
+   <label class="chk"><input type="checkbox" name="need" value="ramp"> Ramp or lift</label>
+   <label class="chk"><input type="checkbox" name="need" value="landmarks"> Landmark directions</label>
+  </fieldset>
+  <button class="btn primary" type="submit">Find route</button>
+ </form>
+ <div class="two">
+  <div>
+   <div class="mapbar" role="group" aria-label="Map controls">
+    <button class="btn" id="zin" aria-label="Zoom in">+</button><button class="btn" id="zout" aria-label="Zoom out">−</button>
+    <button class="btn" id="pl" aria-label="Pan left">←</button><button class="btn" id="pr" aria-label="Pan right">→</button>
+    <button class="btn" id="pu" aria-label="Pan up">↑</button><button class="btn" id="pd" aria-label="Pan down">↓</button>
+    <button class="btn" id="zr">Reset</button>
+   </div>
+   <svg id="map" viewBox="0 0 400 300" role="img" aria-labelledby="mapT"><title id="mapT">Demo map with sample places. A text list follows.</title></svg>
+  </div>
+  <div>
+   <h3>Directions</h3>
+   <div id="directions" aria-live="polite"><p class="note">Choose a start and destination, then select Find route.</p></div>
+   <button class="btn" id="reportBtn">Report a barrier or blocked route</button>
+  </div>
+ </div>
+ <h3>Places (text list)</h3>
+ <input type="search" id="placeSearch" aria-label="Search places" placeholder="Search places, e.g. library">
+ <ul id="placeList" class="cards"></ul>
+ <h3>Barrier reports (this browser, demo)</h3>
+ <ul id="reportList"><li class="note">No reports yet.</li></ul>
+</section>
+
+<section id="buddy" aria-labelledby="h-buddy">
+ <h2 id="h-buddy">Campus Buddy: ask for voluntary help</h2>
+ <p class="banner">Volunteers are fellow students, not carers, security or medical staff. This is not an emergency service. In an emergency contact <strong>[BAC emergency number: to be supplied]</strong>.</p>
+ <form id="reqForm" class="grid" novalidate>
+  <label>Campus<select id="rCampus"><option value="main">Main Campus</option><option value="new">New Campus</option></select></label>
+  <label>Help needed<select id="rType" required>
+   <option value="">Choose…</option><option>Getting to a classroom</option><option>Finding a bathroom</option><option>Getting to the library</option><option>Buying food from vendors</option><option>Using vending machines</option><option>Crossing at a pedestrian crossing</option><option>Reaching a transport pickup</option><option>Finding an accessible entrance</option><option>Navigating a building</option><option>Getting to an event</option><option>Other</option></select>
+   <span class="err" id="rTypeE" role="alert"></span></label>
+  <label>Start<input id="rFrom" required><span class="err" id="rFromE" role="alert"></span></label>
+  <label>Destination<input id="rTo" required><span class="err" id="rToE" role="alert"></span></label>
+  <label>Preferred time<input type="datetime-local" id="rTime"></label>
+  <label>Priority<select id="rUrg"><option>Routine</option><option>Urgent (not an emergency)</option></select></label>
+  <label class="wide">Extra instructions (optional, do not include medical details)<textarea id="rNote" rows="2"></textarea></label>
+  <button class="btn primary" type="submit">Ask for a volunteer</button>
+ </form>
+ <div id="reqPanel" aria-live="polite"></div>
+</section>
+
+<section id="volunteer" aria-labelledby="h-vol">
+ <h2 id="h-vol">Volunteer to help</h2>
+ <p class="note">Help only with what you are comfortable with. You can decline any request, change this, or withdraw at any time. Declining is never recorded or shown.</p>
+ <form id="volForm" class="grid">
+  <fieldset><legend>Activities</legend><div id="volActs"></div></fieldset>
+  <label>Campus<select id="vCampus"><option value="main">Main Campus</option><option value="new">New Campus</option><option value="both">Both</option></select></label>
+  <label>Available<select id="vWhen"><option>Weekday mornings</option><option>Weekday afternoons</option><option>Flexible</option></select></label>
+  <label class="chk"><input type="checkbox" id="vOn" checked> I am currently available</label>
+  <button class="btn primary" type="submit">Save volunteer preferences</button>
+  <button class="btn" type="button" id="vWithdraw">Withdraw</button>
+ </form>
+ <p id="volMsg" class="note" aria-live="polite"></p>
+</section>
+
+<section id="events" aria-labelledby="h-ev">
+ <h2 id="h-ev">Different abilities, one community</h2>
+ <p class="banner">Sample events only. Dates, organisers and venues are placeholders, not confirmed BAC events.</p>
+ <label>Category<select id="evCat"><option value="all">All</option><option>Awareness</option><option>Workshop</option><option>Sport</option><option>Technology</option></select></label>
+ <ul id="evList" class="cards"></ul>
+ <form id="fbForm" class="grid" novalidate>
+  <label class="wide">Suggest an event or improvement<textarea id="fbText" rows="2"></textarea><span class="err" id="fbE" role="alert"></span></label>
+  <button class="btn" type="submit">Send suggestion</button>
+ </form>
+ <p id="fbMsg" class="note" aria-live="polite"></p>
+</section>
+
+<section id="respect" aria-labelledby="h-r">
+ <h2 id="h-r">Offering help respectfully</h2>
+ <ul class="tips">
+  <li><strong>Ask first.</strong> Say "Would you like help?" and wait for the answer.</li>
+  <li><strong>Accept "no".</strong> Declining is a decision, not rudeness.</li>
+  <li><strong>Speak to the person</strong>, not to a companion or interpreter.</li>
+  <li><strong>Don't assume.</strong> Many disabilities are invisible and needs differ from person to person.</li>
+  <li><strong>Don't touch</strong> a wheelchair, cane or assistance animal without permission.</li>
+  <li><strong>Focus on access and participation.</strong> Skip the "inspiring" talk.</li>
+ </ul>
+</section>
+
+<section id="account" aria-labelledby="h-a">
+ <h2 id="h-a">Sign in</h2>
+ <div class="banner">Demo sign-in only. It does <strong>not</strong> verify that you are a BAC student. A real service needs a BAC-approved identity provider (see README notes below).</div>
+ <form id="loginForm" class="grid" novalidate>
+  <label>Student email<input type="email" id="lEmail" autocomplete="email"><span class="err" id="lEmailE" role="alert"></span></label>
+  <button class="btn primary" type="submit">Start demo session</button>
+ </form>
+ <div id="dash" hidden>
+  <h3 id="welcome"></h3>
+  <p><span class="tag off">Not verified</span> Demo session. No password is collected or stored.</p>
+  <div class="cards">
+   <article class="card"><h4>My requests</h4><p id="dReq">None yet.</p></article>
+   <article class="card"><h4>Volunteer status</h4><p id="dVol">Not registered.</p></article>
+   <article class="card"><h4>My events</h4><p id="dEv">None yet.</p></article>
+   <article class="card"><h4>Recent routes</h4><p id="dRoutes">None yet.</p></article>
+  </div>
+  <button class="btn" id="signOut">Sign out</button>
+  <button class="btn" id="delBtn">Clear demo data</button>
+ </div>
+ <p class="note"><a href="#privacy">What data is collected?</a> Account recovery needs a real authentication service and is not available in this demo.</p>
+</section>
+
+<section id="help" aria-labelledby="h-h">
+ <h2 id="h-h">Help and support</h2>
+ <p>If no volunteer is available, contact BAC support: <strong>[Disability support office: contact to be supplied]</strong>. <strong>[Campus security / emergency: to be supplied]</strong>.</p>
+ <h3 id="privacy">Privacy in this demo</h3>
+ <p>Nothing is sent anywhere. Display settings are saved in your browser. Requests and reports exist only until you close the tab. A real service must collect minimal data, never publish disability labels or lists of people who decline, and keep contact details hidden until both people consent.</p>
+ <button class="btn" id="safetyBtn">Report an inappropriate interaction</button>
+</section>
+</main>
+<footer>
+ <p>BAC Inclusive Campus Companion is a student prototype, not an official BAC service. Contact: [placeholder]. <a href="#privacy">Privacy</a> · <button class="linkbtn" id="prefsBtn2">Accessibility settings</button> · <button class="linkbtn" id="repBtn2">Report a problem</button></p>
+</footer>
+
+<dialog id="prefs" aria-labelledby="pT"><form method="dialog"><h2 id="pT">Accessibility settings</h2>
+ <label class="chk"><input type="checkbox" data-pref="large"> Larger text</label>
+ <label class="chk"><input type="checkbox" data-pref="contrast"> Higher contrast</label>
+ <label class="chk"><input type="checkbox" data-pref="calm"> Reduce animation</label>
+ <label class="chk"><input type="checkbox" data-pref="dyslexia"> Dyslexia-friendly font</label>
+ <label class="chk"><input type="checkbox" data-pref="lowdata"> Low-data, simple layout</label>
+ <label class="chk"><input type="checkbox" data-pref="dark"> Dark mode</label>
+ <button class="btn primary">Done</button></form></dialog>
+
+<dialog id="rep" aria-labelledby="rT"><form id="repForm" novalidate><h2 id="rT">Report a problem</h2>
+ <label>Type<select id="repType"><option>Missing ramp</option><option>Blocked route</option><option>Broken lift</option><option>Uneven surface</option><option>Narrow passage</option><option>Inaccessible entrance</option><option>Stairs only</option><option>Other barrier</option><option>Inappropriate interaction</option></select></label>
+ <label>Where and what happened<textarea id="repText" rows="3"></textarea><span class="err" id="repE" role="alert"></span></label>
+ <p class="note">Demo: saved in this browser only. It is NOT sent to BAC staff.</p>
+ <button class="btn primary" type="submit">Save report</button> <button class="btn" type="button" id="repCancel">Cancel</button></form></dialog>
+<p id="live" class="sr" aria-live="polite"></p>
+<script src="script.js"></script>
+</body>
+</html>
